@@ -9,27 +9,27 @@
     @show="showPop"
     @hide='hidePop'
     width='popverData.width'>
-      <div ref="popover-body">
-        <!-- 标题 -->
-        <div class="popover-title" v-if="popoverData.title !== '' ">{{popoverData.title}}</div>
-        <!-- 内容 -->
-        <div class="popover-con">
-          <el-form ref="editForm" data-scope='editForm'>
-            <el-input v-model="popoverData.value" ref="thisValue" :placement='popoverData.placement' :style="{'width':(popoverData.width -115)+'px','height':'32px','display':'inline-block'}" class="inputValue"
-            name="name" data-type="input" v-validate-easy="rules.name"></el-input>
-            <input type="text" class="hidden">
-            <div class="btnDiv">
-              <button type="button" @click="complate"><i class="glyphicon glyphicon-ok"></i></button>
-              <button type="button" @click="cancel"><i class="glyphicon glyphicon-remove"></i></button>
-            </div>
-            <div class="popover-last-slot">
-              <slot name="lastFix"></slot>
-            </div>
-          </el-form>
-        </div>
+    <div ref="popover-body">
+      <!-- 标题 -->
+      <div class="popover-title" v-if="popoverData.title !== ''">{{popoverData.title}}</div>
+      <!-- 内容 -->
+      <div class="popover-con">
+        <el-form ref="editForm" data-scope='editForm'>
+          <el-input v-model="popoverData.value" ref="thisValue" :placement='popoverData.placement' :style="{'width':(popoverData.width -115)+'px','height':'32px','display':'inline-block'}" class="inputValue"
+          name="name" data-type="input" ></el-input>
+          <input type="text" class="hidden">
+          <div class="btnDiv">
+            <button type="button" @click="complate"><i class="el-icon-check"></i></button>
+            <button type="button" @click="cancel"><i class="el-icon-close"></i></button>
+          </div>
+          <div class="popover-last-slot">
+            <slot name="lastFix"></slot>
+          </div>
+        </el-form>
       </div>
-      <span class="icon-edit" slot="reference" @click="show=true"></span>
-    </el-popover>
+    </div>
+    <span class="el-icon-edit" slot="reference" @click="show=true"></span>
+  </el-popover>
 </template>
 <script>
 export default{
@@ -48,6 +48,7 @@ export default{
   },
   watch:{
     show(val){
+      console.log(val)
       if(val){
         this.setData()
       }
@@ -87,10 +88,11 @@ export default{
         visible: this.popoverIsShow?this.popoverIsShow:false,
         axiosFun:this.options.axiosFun?this.options.axiosFun:null
       }
+      console.log('this.popoverData',this.popoverData,this.show)
       //验证信息 默认只有一个框 且name是name验证对象的第一个属性为其验证规则
       this.rules = this.options.rules? Object.assign({},this.options.rules): {}
       let keys = Object.keys(this.rules)
-      this.rules.name = this.rules[key[0]]
+      this.rules.name = this.rules[keys[0]]
 
       if(this.$refs.thisValue && this.rules.name){
         this.V.$removeRules(this.$refs.thisValue.$el)
@@ -162,5 +164,8 @@ export default{
   /* display: inline-block; */
   line-height: 32px;
   float:right;
+}
+.hidden{
+  display: none;
 }
 </style>

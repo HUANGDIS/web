@@ -2,18 +2,29 @@
 import Vue from 'vue'
 import App from './App.vue'
 import router from './router'
+import ElementUI from 'element-ui';
+import 'element-ui/lib/theme-chalk/index.css';
+import ConfirmPlugin from "./components/commons/confirm";
+
+
+Vue.use(ConfirmPlugin)
+Vue.use(ElementUI);
 
 
 // 业务组件导入
-import editpopover from './components/commons/editpopover'
+import editpopover from './components/commons/editpopover/main.vue'
 
 
 
 // 工具类(.js)导入
 import utils from './utils/utils.js'
-import { util } from 'vue/types/umd'
+import enums from './utils/enum.js'
+import vConform from './components/commons/confirm/index.js'
 
-Vue.config.productionTip = false
+
+// import { util } from 'vue/types/umd'
+// Vue.config.productionTip = false
+
 
 // 注册全局组件
 Vue.component('editpopover', editpopover)
@@ -22,10 +33,9 @@ Vue.component('editpopover', editpopover)
 
 // 添加Vue原型方法
 Vue.prototype.utils = utils
-
-
-
-let haslogin = false
+Vue.prototype.enums = enums
+// Vue.prototype.$vConfirm = vConform
+// let haslogin = false
 async function singleLogin() {
   if (window.location.search.split('?').length > 1 && window.location.search.split('?')[1].split('=').length > 1) {
     if (window.location.search.split('?')[1].split('=')[1]) {
@@ -71,56 +81,56 @@ async function singleLogin() {
 
 
 // 解析ui_config.xml全局默认配置
-let uiConfig
-if (process.env.NODE_ENV === 'production') {
-  uiConfig = getConfigXml('')
-} else {
-  uiConfig = getConfigXml()
-}
+// let uiConfig
+// if (process.env.NODE_ENV === 'production') {
+//   uiConfig = getConfigXml('')
+// } else {
+//   uiConfig = getConfigXml()
+// }
 
-store.commit('updateConf', uiConfig)
+// store.commit('updateConf', uiConfig)
 
 
 
 // 路由设置
-router.beforeEach((to, from, next) => {
-  if (!haslogin && to.fullPath === '/login' && from.fullPath === '/' && window.location.href.split('?').length > 1) {
-    singleLogin().then(() => {
-      // 单点登录获取用户信息成功
-      if (store.state.userData && store.state.userData.roleType && store.state.userData.roleType === 'SEC_AUD') {
-        window.location.href = '/#/homes/task'
-      } else {
-        window.location.href = '/#/homes/mains'
-      }
-    })
-    return
-  } else if (to.matched.length === 0) {
-    from.path ? next({ path: from.path }) : next('/')
-  } else {
-    if (to.matched.length === 3 && from.path === '/' && from.fullPath === '/' && from.matched.length === 0) {
-      // f5刷新时，首先会匹配一次路由，这里删除路由以免view更新发送多余请求
-      to.query.d = 1 //更改query以更改URl，便于检测厚点点击tree时的url更新变动
-      // to.matched[2].components = {}
-    }
-    if (to.matched.length === 2 && to.matched[to.matched.length - 1].path.split('/')[to.matched[to.matched.length - 1].path.split('/').length - 1] === ':id') {
-      // 匹配的第二个路由没有匹配到第三个tab的情况特殊解决
-      next({ path: to.matched[to.matched.length - 1].path.replace('/:id') })
-    } else if (to.matched.length === 1 && to.matched[0].path === '/homes') {
-      // 
-      next()
-    } else {
-      next()
-    }
-  }
-})
+// router.beforeEach((to, from, next) => {
+//   if (!haslogin && to.fullPath === '/login' && from.fullPath === '/' && window.location.href.split('?').length > 1) {
+//     singleLogin().then(() => {
+//       // 单点登录获取用户信息成功
+//       if (store.state.userData && store.state.userData.roleType && store.state.userData.roleType === 'SEC_AUD') {
+//         window.location.href = '/#/homes/task'
+//       } else {
+//         window.location.href = '/#/homes/mains'
+//       }
+//     })
+//     return
+//   } else if (to.matched.length === 0) {
+//     from.path ? next({ path: from.path }) : next('/')
+//   } else {
+//     if (to.matched.length === 3 && from.path === '/' && from.fullPath === '/' && from.matched.length === 0) {
+//       // f5刷新时，首先会匹配一次路由，这里删除路由以免view更新发送多余请求
+//       to.query.d = 1 //更改query以更改URl，便于检测厚点点击tree时的url更新变动
+//       // to.matched[2].components = {}
+//     }
+//     if (to.matched.length === 2 && to.matched[to.matched.length - 1].path.split('/')[to.matched[to.matched.length - 1].path.split('/').length - 1] === ':id') {
+//       // 匹配的第二个路由没有匹配到第三个tab的情况特殊解决
+//       next({ path: to.matched[to.matched.length - 1].path.replace('/:id') })
+//     } else if (to.matched.length === 1 && to.matched[0].path === '/homes') {
+//       // 
+//       next()
+//     } else {
+//       next()
+//     }
+//   }
+// })
 
-router.afterEach((to, from) => {
-  // 
-})
+// router.afterEach((to, from) => {
+//   // 
+// })
 
-router.onError((error) => {
+// router.onError((error) => {
 
-})
+// })
 
 new Vue({
   router,
