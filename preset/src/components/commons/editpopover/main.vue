@@ -4,18 +4,17 @@
     ref="editpopover"
     :placement='popoverData.placement'
     trigger='manual'
-    v-show="show"
+    v-model="show"
     popover-class='popover'
-    @show="showPop"
-    @hide='hidePop'
-    width='popverData.width'>
+    width='popverData.width'
+   >
     <div ref="popover-body">
       <!-- 标题 -->
       <div class="popover-title" v-if="popoverData.title !== ''">{{popoverData.title}}</div>
       <!-- 内容 -->
       <div class="popover-con">
         <el-form ref="editForm" data-scope='editForm'>
-          <el-input v-model="popoverData.value" ref="thisValue" :placement='popoverData.placement' :style="{'width':(popoverData.width -115)+'px','height':'32px','display':'inline-block'}" class="inputValue"
+          <el-input v-model="popoverData.value" ref="thisValue" :placement='popoverData.placement'  :style="{'width':(popoverData.width -115)+'px','height':'32px','display':'inline-block'}" class="inputValue"
           name="name" data-type="input" ></el-input>
           <input type="text" class="hidden">
           <div class="btnDiv">
@@ -28,7 +27,7 @@
         </el-form>
       </div>
     </div>
-    <span class="el-icon-edit" slot="reference" @click="show=true"></span>
+    <span class="el-icon-edit" slot="reference" @click="show=!show"></span>
   </el-popover>
 </template>
 <script>
@@ -48,7 +47,6 @@ export default{
   },
   watch:{
     show(val){
-      console.log(val)
       if(val){
         this.setData()
       }
@@ -77,6 +75,9 @@ export default{
     stopPropagation(evt){
       evt.stopPropagation()
     },
+    /**
+     * 暂未添加校验
+     */
     setData(){
       this.popoverData ={
         show: false,
@@ -88,7 +89,6 @@ export default{
         visible: this.popoverIsShow?this.popoverIsShow:false,
         axiosFun:this.options.axiosFun?this.options.axiosFun:null
       }
-      console.log('this.popoverData',this.popoverData,this.show)
       //验证信息 默认只有一个框 且name是name验证对象的第一个属性为其验证规则
       this.rules = this.options.rules? Object.assign({},this.options.rules): {}
       let keys = Object.keys(this.rules)
@@ -127,7 +127,7 @@ export default{
   }
 }
 </script>
-<style scoped>
+<style lang="less" scoped>
 .edit{
   background: '';
   width: 16px;
@@ -149,16 +149,26 @@ export default{
 }
 .popover-con{
   padding: 10px 15px;
-  font-size: 9em;
+  font-size: .9em;
   float: left;
 }
-.inputValue .el-input__inner{
+.inputValue .el-input__inner /deep/{
   width: 100% !important;
   height: 32px !important;
+  line-height: 32px!important;
 }
 .btnDiv{
   float: right;
   margin-left: 5px;
+  text-align: justify;
+  button{
+    height: 32px;
+    padding: 6px 12px;
+    background-color: #fff;
+    border: 1px solid #d1d3de;
+    color: #595959;
+    margin-bottom: 0;
+  }
 }
 .poppover-last-slot{
   /* display: inline-block; */

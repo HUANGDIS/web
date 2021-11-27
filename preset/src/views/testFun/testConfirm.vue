@@ -32,13 +32,25 @@
       </el-table>
     </div>
     <editpopover :options="editAddrOptions" v-show=true></editpopover> 
+    <el-form :rules="rules">
+      <el-form-item>
+        <!-- <ipInput  :showErrLabel="false" v-model="ip" :name="ip" data-type="custom"  data-scope="ip"></ipInput> -->
+      </el-form-item>
+    </el-form>
+   <!-- 表格测试 -->
+    <div>
+      <el-grid width="500" :config="tableCfg" :data="data"></el-grid>
+    </div>
   </div>
 </template>
 <script>
+// import ipInput from '../../components/commons/ipInput/ipInput.vue'
+import elGrid from '../../components/el-grid/index'
 export default{
+  components:{elGrid},
   data(){
     return{
-       confirmOptions: {
+      confirmOptions: {
         height: '230px',
         isShow: true,
         title: '提示',
@@ -61,7 +73,48 @@ export default{
             date: '2016-05-03',
             name: '王小虎',
             address: '上海市普陀区金沙江路 1516 弄'
-          }]
+      }],
+      ip: '',
+      rules:{
+        ip:[
+          ["required","ip是必须的"],
+          ["ip"]
+        ]
+      },
+      data: [
+        {
+          date: '2016-05-02',
+          name: '王小虎',
+          address: '上海市普陀区金沙江路 1518 弄'
+        }, 
+        {
+          date: '2016-05-04',
+          name: '王小虎',
+          address:  '上海市普陀区金沙江路 1517 弄'
+        },
+        {
+          date: '2016-05-03',
+          name: '王小虎',
+          address: '上海市普陀区金沙江路 1516 弄'
+        }
+      ],
+      tableCfg:{
+        showSelection:true,
+        columns:[
+          {
+            prop: 'name',   
+            label: '姓名'
+          },
+          {
+            prop: 'date',  
+            label: '日期'
+          },
+          {
+            prop: 'address',  
+            label: '地址'
+          }
+        ] 
+      }
     }
   },
   methods:{
@@ -84,6 +137,8 @@ export default{
      return{
        title: '修改地址',
        value: this.tableData.address,
+       axiosFun: function(){},
+       rules:{}
      }
    }
  }

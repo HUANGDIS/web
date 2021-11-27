@@ -9,6 +9,7 @@
     "doc": "docsify serve docs"
   },
   "dependencies": {
+    "axios": "^0.24.0",
     "core-js": "^3.6.5",
     "element-ui": "^2.15.6",
     "node-sass": "^4.14.1",
