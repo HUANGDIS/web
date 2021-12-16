@@ -67,7 +67,10 @@ export default {
           tableHeight: "100%",
           dataLoading: false,
           dataSource: [],
+          localDataSource: [],//本地数据prop传入的本地数据或者搜索直接赋值的本地数据
           remoteRowData: {},
+          selectData:[],
+          keyId: '',
           sortProp: '',
           sortOrder: '',
           currentPage: 1,
@@ -207,13 +210,13 @@ export default {
     mounted(){
       let url = this.url
       if(url){
-        this.getRmoteData()
+        this.getRemoteData()
       }
     },
     methods: {
       tableResizeHeight(){},
       getSibingNextHeight(ele){},
-      getSibingNextHeight(ele){},
+      getSibingPreviousHeight(ele){},
       isEmpty(data){},
       bindEvent(validate){},
       getValue(){},
@@ -241,7 +244,7 @@ export default {
       reload(){
         this.getRmoteData()
       },
-      getRmoteData(){
+      getRemoteData(){
         let url = this.url
         let param = this.staticParams
         // 服务端筛选
@@ -323,8 +326,53 @@ export default {
      setField(){
        
      },
-     toggleFields(data){}
-
+     toggleFields(data){},
+     /**
+      * 点击某一行
+      * @param {[type]} selection 
+      * @param {[type]} row
+      */
+     selectRow(selection,row){
+       if(this.tableCfg.beforeSelect && !this.tableCfg.beforeSelect()){
+        //  选中表格之前如果beforeSelect返回false则不让选中
+         return
+       }
+       let that = this;
+       this.selectData = Object.assign([],selection);
+       let selectIds = this.getIDs();
+       let selected = !(selectIds && selectIds.indexOf(this.keyId?row[this.keyId]:row.id));
+       this.$refs.table.toggleFields(row,selected);
+       setTimeout(()=>{
+         that.cellClick(row);
+       });
+     },
+     getIDs(){
+       let ids = [];
+       let that = this;
+       let selectIds = this.getSelectData();
+       if(selectIds && selectIds.length){
+         selectIds.forEach((item,index)=>{
+           ids.push(that.keyId?item[that.keyId]:item['id']);
+         });
+       }
+       return ids.length>0?ids:[];
+     },
+     /**
+      * 获取选择的数据
+      */
+     getSelectData(){
+       return this.selectData;
+     },
+     cellClick(row,column,cell,event){
+       if(this.tableOnlyShowNoSelect){
+         return;
+       }
+      //  todo
+      if(event && event.target &&(event.target.tagName === 'INPUT' || event.target.tagName === 'BUTTON' || event.target.tagName === 'SELECT')){
+        return;
+      }
+     },
+     tableOnlyShowNoSelect(){},
     }
 }
 </script>

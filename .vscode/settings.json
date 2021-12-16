@@ -1,0 +1,50 @@
+{
+  // 让prettier使用eslint的代码格式进行校验
+//   "editor.formatOnSave": true,
+  // vetur的自定义设置
+//   "vetur.format.defaultFormatterOptions": {
+//     "wrap_attributes": "force-expand-multimine",
+//     "prettier": {
+//       "semi": true, //无分号
+//       "singleQuote": false, //单引号
+//       "TrailingCooma": "true", //让对象里面有个空格
+//       "wrapAttributes": "force-expand-multiline", 
+//       "sortAttributes": true,
+//       "trailingComma": "none",
+//       "printWidth": 100
+//     }
+//   },
+//   "eslint.run": "onsave",
+  "editor.formatOnPaste": true,
+  // 开启对.vue文件中错误的检查
+  "eslint.alwaysShowStatus": true,
+  "eslint.options":{
+    "configFile": ".eslintrc.js"
+  },
+  "eslint.format.enable": true,
+  "javascript.format.enable": true,
+  "eslint.validate":[
+    "javascript",
+    "javascriptreact",
+    "typescript",
+    "typescriptreact"
+  ],
+  // "[javascript]": {
+  //   "editor.defaultFormatter": "vscode.typescript-language-features"
+  // },
+  "[json]": {
+    "editor.defaultFormatter": "vscode.json-language-features"
+  },
+  // 保存文件时进行eslint修复，并不是修复所有问题，多数还是需要手动修复
+  "editor.codeActionsOnSave": {
+    // "source.fixAll.eslint": true
+},
+// "editor.fontFamily": "Fira Code",
+// "editor.fontSize": 16,
+  // 每次保存的时候将代码按eslint格式进行修复
+  // "vetur.format.defaultFormatter.html": "js-beautify-html",
+  // "vetur.format.defaultFormatter.js": "prettier",
+  // "javascript.format.insertSpaceAfterFunctionKeywordForAnonymousFunctions": false,
+  // "typescript.format.insertSpaceAfterFunctionKeywordForAnonymousFunctions": false,
+  // "javascript.format.insertSpaceBeforeFunctionParenthesis": false
+}

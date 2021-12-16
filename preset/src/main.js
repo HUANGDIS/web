@@ -1,5 +1,6 @@
 // 第三方插件引入
 import Vue from 'vue'
+// import Vue from 'vue/dist/vue.esm.js'
 import App from './App.vue'
 import router from './router'
 import ElementUI from 'element-ui';

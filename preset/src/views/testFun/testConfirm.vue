@@ -41,13 +41,16 @@
     <div>
       <el-grid width="500" :config="tableCfg" :data="data"></el-grid>
     </div>
+    <!-- v-tree测试 -->
+    <v-tree :treeData="treeData"></v-tree>
   </div>
 </template>
 <script>
 // import ipInput from '../../components/commons/ipInput/ipInput.vue'
 import elGrid from '../../components/el-grid/index'
+import vTree from '../../components/v-tree/v-tree.vue'
 export default{
-  components:{elGrid},
+  components:{elGrid,vTree},
   data(){
     return{
       confirmOptions: {
@@ -114,7 +117,25 @@ export default{
             label: '地址'
           }
         ] 
-      }
+      },
+      treeData:[
+          {
+              text:'xiaoming', 
+              id:'1', 
+              icon:'folder', 
+              children:[ 
+                  {text:'1-1', id:'1-1',icon:'folder', 
+                      children:[ 
+                          {text:'1-1-1',id:'1-1-1', icon:'file',},
+                          {text:'1-1-2',id:'1-1-2',icon:'file'}
+                        ] 
+                   },
+                   { text:'1-2', id:'1-2', icon:'file', }] }, 
+                   {text:'hua', id:'2', icon:'folder', 
+                   children:[{ text:'2-2',id:'2-2', icon:'file', }] }, 
+                   {text:'hua', id:'3', icon:'folder', 
+                   children:[{text:'3-3', id:'3-3', icon:'file', }] }
+      ]
     }
   },
   methods:{
@@ -137,7 +158,7 @@ export default{
      return{
        title: '修改地址',
        value: this.tableData.address,
-       axiosFun: function(){},
+        axiosFun: function(){},
        rules:{}
      }
    }
